@@ -27,9 +27,9 @@ const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mo
 export default function Page() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const components = [
-    <RoseRing route='/blob' scale={1.5} position={[0, 0, 0]} rotationSpeed={0.3} />,
-    <GoldenRing scale={1.5} position={[0, 0, 0]} rotation={[0, 0, 0]} rotationSpeed={0.3} />,
-    <BlackRing route='/blob' scale={1.5} position={[0, 0, 0]} rotationSpeed={0.3} />,
+    <RoseRing route='/blob' scale={1.5} position={[0, 0, 0]} rotationSpeed={0.2} />,
+    <GoldenRing route='/blob' scale={1.5} position={[0, 0, 0]} rotation={[0, 0, 0]} rotationSpeed={0.2} />,
+    <BlackRing route='/blob' scale={1.5} position={[0, 0, 0]} rotationSpeed={0.2} />,
   ]
 
   return (
@@ -57,7 +57,7 @@ export default function Page() {
               minPolarAngle={Math.PI / 4}
               maxPolarAngle={Math.PI / 1.5}
               minDistance={2}
-              maxDistance={10}
+              maxDistance={12}
             />
           </View>
 

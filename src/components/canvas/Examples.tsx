@@ -24,7 +24,7 @@ export const Blob = ({ route = '/', ...props }) => {
   )
 }
 
-export function RoseRing({ color = 'red', rotationSpeed = 0.5, ...props }) {
+export function RoseRing({ color = 'red', rotationSpeed = 0.3, ...props }) {
   const { scene } = useGLTF('/rose-ring.glb')
 
   useMemo(() => {
@@ -40,7 +40,7 @@ export function RoseRing({ color = 'red', rotationSpeed = 0.5, ...props }) {
   return <primitive object={scene} {...props} />
 }
 
-export function BlackRing({ color = 'black', rotationSpeed = 0.5, ...props }) {
+export function BlackRing({ color = 'black', rotationSpeed = 0.7, ...props }) {
   const { scene } = useGLTF('/black-ring.glb')
 
   useMemo(() => {

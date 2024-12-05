@@ -14,7 +14,12 @@ export const Common = ({ color }) => (
   </Suspense>
 )
 
-const View = forwardRef(({ children, orbit, ...props }, ref) => {
+interface ViewProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode
+  orbit?: boolean
+}
+
+const View = forwardRef<HTMLDivElement, ViewProps>(({ children, orbit, ...props }, ref) => {
   const localRef = useRef(null)
   useImperativeHandle(ref, () => localRef.current)
 
