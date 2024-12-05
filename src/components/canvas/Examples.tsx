@@ -16,53 +16,58 @@ export const Blob = ({ route = '/', ...props }) => {
       onClick={() => router.push(route)}
       onPointerOver={() => hover(true)}
       onPointerOut={() => hover(false)}
-      {...props}>
+      {...props}
+    >
       <sphereGeometry args={[1, 64, 64]} />
       <MeshDistortMaterial roughness={0.5} color={hovered ? 'hotpink' : '#1fb2f5'} />
     </mesh>
   )
 }
 
-export const Logo = ({ route = '/blob', ...props }) => {
-  const mesh = useRef(null)
-  const router = useRouter()
+export function RoseRing({ color = 'red', rotationSpeed = 0.5, ...props }) {
+  const { scene } = useGLTF('/rose-ring.glb')
 
-  const [hovered, hover] = useState(false)
-  const points = useMemo(() => new THREE.EllipseCurve(0, 0, 3, 1.15, 0, 2 * Math.PI, false, 0).getPoints(100), [])
+  useMemo(() => {
+    scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.material = new THREE.MeshStandardMaterial({ color })
+      }
+    })
+  }, [scene, color])
 
-  useCursor(hovered)
-  useFrame((state, delta) => {
-    const t = state.clock.getElapsedTime()
-    mesh.current.rotation.y = Math.sin(t) * (Math.PI / 8)
-    mesh.current.rotation.x = Math.cos(t) * (Math.PI / 8)
-    mesh.current.rotation.z -= delta / 4
-  })
-
-  return (
-    <group ref={mesh} {...props}>
-      {/* @ts-ignore */}
-      <Line worldUnits points={points} color='#1fb2f5' lineWidth={0.15} />
-      {/* @ts-ignore */}
-      <Line worldUnits points={points} color='#1fb2f5' lineWidth={0.15} rotation={[0, 0, 1]} />
-      {/* @ts-ignore */}
-      <Line worldUnits points={points} color='#1fb2f5' lineWidth={0.15} rotation={[0, 0, -1]} />
-      <mesh onClick={() => router.push(route)} onPointerOver={() => hover(true)} onPointerOut={() => hover(false)}>
-        <sphereGeometry args={[0.55, 64, 64]} />
-        <meshPhysicalMaterial roughness={0.5} color={hovered ? 'hotpink' : '#1fb2f5'} />
-      </mesh>
-    </group>
-  )
-}
-
-export function Duck(props) {
-  const { scene } = useGLTF('/duck.glb')
-
-  useFrame((state, delta) => (scene.rotation.y += delta))
+  useFrame((state, delta) => (scene.rotation.y += delta * rotationSpeed))
 
   return <primitive object={scene} {...props} />
 }
-export function Dog(props) {
-  const { scene } = useGLTF('/dog.glb')
+
+export function BlackRing({ color = 'black', rotationSpeed = 0.5, ...props }) {
+  const { scene } = useGLTF('/black-ring.glb')
+
+  useMemo(() => {
+    scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.material = new THREE.MeshStandardMaterial({ color })
+      }
+    })
+  }, [scene, color])
+
+  useFrame((state, delta) => (scene.rotation.y += delta * rotationSpeed))
+
+  return <primitive object={scene} {...props} />
+}
+
+export function GoldenRing({ color = 'gold', rotationSpeed = 0.5, ...props }) {
+  const { scene } = useGLTF('/golden-ring.glb')
+
+  useMemo(() => {
+    scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.material = new THREE.MeshStandardMaterial({ color })
+      }
+    })
+  }, [scene, color])
+
+  useFrame((state, delta) => (scene.rotation.y += delta * rotationSpeed))
 
   return <primitive object={scene} {...props} />
 }
