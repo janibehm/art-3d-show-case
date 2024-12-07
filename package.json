@@ -47,5 +47,6 @@
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "prettier": "npx prettier --list-different \"./src/**/*.{ts,tsx,md}\" \"./app/**/*.{ts,tsx,md}\"\""
-  }
+  },
+  "description": "3D website with NextJs Three Fiber"
 }
