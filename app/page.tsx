@@ -11,7 +11,7 @@ const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.
   ssr: false,
   loading: () => (
     <div className='flex h-96 w-full flex-col items-center justify-center'>
-      <svg className='-ml-1 mr-3 h-5 w-5 animate-spin text-black' fill='none' viewBox='0 0 24 24'>
+      <svg className='-ml-1 mr-3 size-5 animate-spin text-black' fill='none' viewBox='0 0 24 24'>
         <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
         <path
           className='opacity-75'
@@ -27,9 +27,9 @@ const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mo
 export default function Page() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const components = [
-    <RoseRing route='/blob' scale={1.5} position={[0, 0, 0]} rotationSpeed={0.2} />,
-    <GoldenRing route='/blob' scale={1.5} position={[0, 0, 0]} rotation={[0, 0, 0]} rotationSpeed={0.2} />,
-    <BlackRing route='/blob' scale={1.5} position={[0, 0, 0]} rotationSpeed={0.2} />,
+    <RoseRing key='rose' route='/blob' scale={1.5} position={[0, 0, 0]} rotationSpeed={0.2} />,
+    <GoldenRing key='golden' route='/blob' scale={1.5} position={[0, 0, 0]} rotation={[0, 0, 0]} rotationSpeed={0.2} />,
+    <BlackRing key='black' route='/blob' scale={1.5} position={[0, 0, 0]} rotationSpeed={0.2} />,
   ]
 
   return (

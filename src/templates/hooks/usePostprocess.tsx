@@ -76,10 +76,10 @@ const usePostProcess = () => {
       `,
       glslVersion: THREE.GLSL3,
     })
-    screen.material.uniforms.diffuse.value = renderTarget.texture
+    ;(screen.material as THREE.RawShaderMaterial).uniforms.diffuse.value = renderTarget.texture
 
     return [screenCamera, screenScene, screen, renderTarget]
-  }, [gl.encoding])
+  }, [])
   useEffect(() => {
     const { width, height } = size
     const { w, h } = {
@@ -94,7 +94,7 @@ const usePostProcess = () => {
     gl.render(scene, camera)
 
     gl.setRenderTarget(null)
-    if (screen) screen.material.uniforms.time.value += delta
+    if (screen) (screen.material as THREE.RawShaderMaterial).uniforms.time.value += delta
 
     gl.render(screenScene, screenCamera)
   }, 1)
