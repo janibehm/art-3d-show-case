@@ -3,69 +3,68 @@
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import { useMemo, useRef, useState } from 'react'
-import { Line, useCursor, MeshDistortMaterial } from '@react-three/drei'
-import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
 
-export const Blob = ({ route = '/', ...props }) => {
-  const router = useRouter()
-  const [hovered, hover] = useState(false)
-  useCursor(hovered)
-  return (
-    <mesh
-      onClick={() => router.push(route)}
-      onPointerOver={() => hover(true)}
-      onPointerOut={() => hover(false)}
-      {...props}
-    >
-      <sphereGeometry args={[1, 64, 64]} />
-      <MeshDistortMaterial roughness={0.5} color={hovered ? 'hotpink' : '#1fb2f5'} />
-    </mesh>
-  )
-}
+export function BalloonDog({ color = 'green', rotationSpeed = 0.5, onColorChange, ...props }) {
+  const { scene } = useGLTF('/balloon-dog.glb')
 
-export function RoseRing({ color = 'red', rotationSpeed = 0.3, ...props }) {
-  const { scene } = useGLTF('/rose-ring.glb')
+  const colorValues = {
+    green: '#00CC80', // Dark metallic green
+    pink: '#FF0066', // Darker pink
+    red: '#CC0000', // Much darker red
+    blue: '#0099CC', // Dark blue
+  }
+
+  // Enhanced material properties for metallic colors
+  const getMaterialProperties = (colorName) => {
+    if (colorName === 'red') {
+      return {
+        color: colorValues[colorName],
+        metalness: 1.1,
+        roughness: 0.05,
+        envMapIntensity: 2.2,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.1,
+        reflectivity: 1.2,
+        emissive: '#990000',
+        emissiveIntensity: 0.15,
+      }
+    }
+    if (colorName === 'pink') {
+      return {
+        color: colorValues[colorName],
+        metalness: 1.0,
+        roughness: 0.05,
+        envMapIntensity: 2.2,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.1,
+        reflectivity: 1.2,
+        emissive: '#CC0052',
+        emissiveIntensity: 0.15,
+      }
+    }
+    return {
+      color: colorValues[colorName],
+      metalness: 1.5,
+      roughness: 0.05,
+      envMapIntensity: 2.5,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.1,
+      reflectivity: 1.2,
+      emissive: colorValues[colorName],
+      emissiveIntensity: 0.15,
+    }
+  }
 
   useMemo(() => {
     scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
-        child.material = new THREE.MeshStandardMaterial({ color })
+        const materialProps = getMaterialProperties(color)
+        child.material = new THREE.MeshPhysicalMaterial(materialProps)
       }
     })
-  }, [scene, color])
-
-  useFrame((state, delta) => (scene.rotation.y += delta * rotationSpeed))
-
-  return <primitive object={scene} {...props} />
-}
-
-export function BlackRing({ color = 'black', rotationSpeed = 0.7, ...props }) {
-  const { scene } = useGLTF('/black-ring.glb')
-
-  useMemo(() => {
-    scene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.material = new THREE.MeshStandardMaterial({ color })
-      }
-    })
-  }, [scene, color])
-
-  useFrame((state, delta) => (scene.rotation.y += delta * rotationSpeed))
-
-  return <primitive object={scene} {...props} />
-}
-
-export function GoldenRing({ color = 'gold', rotationSpeed = 0.5, ...props }) {
-  const { scene } = useGLTF('/golden-ring.glb')
-
-  useMemo(() => {
-    scene.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        child.material = new THREE.MeshStandardMaterial({ color })
-      }
-    })
-  }, [scene, color])
+    if (onColorChange) onColorChange(color)
+  }, [scene, color, onColorChange])
 
   useFrame((state, delta) => (scene.rotation.y += delta * rotationSpeed))
 
