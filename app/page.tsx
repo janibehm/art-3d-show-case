@@ -36,12 +36,12 @@ export default function Page() {
 
   const colorDescriptions = {
     green: {
-      title: 'Metallic Green Balloon Dog',
+      title: 'Green Balloon Dog',
       description: 'A vibrant interpretation of the classic balloon dog, finished in shimmering green.',
       details: 'This piece represents nature and modernity in perfect harmony.',
     },
     pink: {
-      title: 'Pink Pink Balloon Dog',
+      title: 'Pink Balloon Dog',
       description: 'A playful and elegant take on the balloon dog, rendered in metallic pink.',
       details: 'Perfect for adding a touch of whimsy and sophistication to any space.',
     },
@@ -81,36 +81,8 @@ export default function Page() {
         }
       `}</style>
       <div className='container mx-auto px-4'>
-        <div className='flex flex-col items-center min-h-screen py-8'>
-          <div className='w-full max-w-4xl mb-12' style={{ height: '70vh' }}>
-            <div className='absolute left-8 top-8 flex flex-col gap-2 z-10'>
-              {colors.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setCurrentColor(color)}
-                  className={`px-4 py-2 rounded-md transition-colors bg-black text-white
-                    ${currentColor === color ? 'ring-2 ring-white ring-offset-2 ring-offset-[#ffe0e0]' : 'opacity-75 hover:opacity-100'}`}
-                >
-                  {color.charAt(0).toUpperCase() + color.slice(1)}
-                </button>
-              ))}
-            </div>
-
-            <div className='absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-4 z-10'>
-              <button
-                onClick={handlePreviousColor}
-                className='p-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors'
-              >
-                ↑
-              </button>
-              <button
-                onClick={handleNextColor}
-                className='p-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors'
-              >
-                ↓
-              </button>
-            </div>
-
+        <div className='flex flex-col items-center min-h-screen'>
+          <div className='w-full max-w-4xl mb-8' style={{ height: '65vh' }}>
             <View className='h-full'>
               <Suspense fallback={null}>
                 <ambientLight intensity={0.5} />
@@ -120,7 +92,7 @@ export default function Page() {
 
                 <BalloonDog
                   color={currentColor}
-                  scale={2.5}
+                  scale={2.2}
                   position={[0, -2, 0]}
                   rotation={[0, 0, 0]}
                   rotationSpeed={0.2}
@@ -139,27 +111,59 @@ export default function Page() {
             </View>
           </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-4xl mb-8'>
-            <div className='space-y-4'>
-              <h2 className='text-2xl font-bold'>{colorDescriptions[currentColor].title}</h2>
-              <p className='text-gray-600'>{colorDescriptions[currentColor].description}</p>
+          <div className='grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl'>
+            <div className='space-y-3'>
+              <h2 className='text-xl font-bold'>{colorDescriptions[currentColor].title}</h2>
+              <p className='text-gray-600 text-sm'>{colorDescriptions[currentColor].description}</p>
             </div>
 
-            <div className='space-y-4'>
-              <h2 className='text-2xl font-bold'>Details</h2>
-              <p className='text-gray-600'>{colorDescriptions[currentColor].details}</p>
+            <div className='space-y-3'>
+              <h2 className='text-xl font-bold'>Details</h2>
+              <p className='text-gray-600 text-sm'>{colorDescriptions[currentColor].details}</p>
+            </div>
+
+            <div className='flex flex-col justify-start gap-3'>
+              <div className='flex items-center gap-3'>
+                <h2 className='text-xl font-bold'>Variant</h2>
+                <div className='flex items-center gap-2'>
+                  <button
+                    onClick={handlePreviousColor}
+                    className='p-1.5 bg-black text-white rounded-full hover:bg-gray-800 transition-colors text-sm'
+                  >
+                    ←
+                  </button>
+                  <select
+                    value={currentColor}
+                    onChange={(e) => setCurrentColor(e.target.value)}
+                    className='px-3 py-1.5 bg-black text-white rounded-md hover:bg-gray-800 
+                              transition-colors cursor-pointer focus:outline-none focus:ring-2 
+                              focus:ring-white focus:ring-offset-2 focus:ring-offset-[#ffe0e0]'
+                  >
+                    <option value='green'>Emerald</option>
+                    <option value='pink'>Rose</option>
+                    <option value='red'>Ruby</option>
+                    <option value='blue'>Sapphire</option>
+                  </select>
+                  <button
+                    onClick={handleNextColor}
+                    className='p-1.5 bg-black text-white rounded-full hover:bg-gray-800 transition-colors text-sm'
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+
+              <a
+                href='https://www.etsy.com/fi-en/listing/1726413506/blue-resin-balloon-dog-desk-sculpture'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-block px-6 py-2 text-base font-semibold text-black bg-white rounded-full 
+                         border-2 border-black hover:bg-gray-100 transition-colors duration-200 transform hover:scale-105 mt-2'
+              >
+                Buy Here
+              </a>
             </div>
           </div>
-
-          <a
-            href='https://www.etsy.com/fi-en/listing/1726413506/blue-resin-balloon-dog-desk-sculpture?ga_order=most_relevant&ga_search_type=all&ga_view_type=gallery&ga_search_query=balloon+dog+jeff+koons&ref=sr_gallery-1-9&pro=1&frs=1&sts=1&content_source=57606a26f146ee3257c88608720c72c6b3bfc584%253A1726413506&search_preloaded_img=1&organic_search_click=1'
-            target='_blank'
-            rel='noopener noreferrer'
-            className='inline-block px-8 py-3 text-lg font-semibold text-white bg-black rounded-full 
-                     hover:bg-gray-800 transition-colors duration-200 transform hover:scale-105'
-          >
-            Buy Here
-          </a>
         </div>
       </div>
     </>
