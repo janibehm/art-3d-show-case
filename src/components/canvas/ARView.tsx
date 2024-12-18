@@ -66,33 +66,30 @@ export function ARView({ currentColor }) {
   if (isIOSDevice) {
     const filename = `balloon-dog-${currentColor.toLowerCase()}.usdz`
 
-    console.log({
-      isIOSDevice,
-      currentColor,
-      filename,
-      fullPath: window.location.origin + '/' + filename,
-    })
-
-    // Add error boundary
-    try {
-      fetch(`/${filename}`)
-        .then((response) => {
-          console.log('Response:', {
-            status: response.status,
-            ok: response.ok,
-            headers: Object.fromEntries(response.headers),
-            url: response.url,
-          })
-        })
-        .catch((error) => console.log('Fetch error:', error.message))
-    } catch (error) {
-      console.log('General error:', error.message)
-    }
-
     return (
       <div className='fixed top-4 right-4 flex flex-col gap-2'>
-        <a rel='ar' href={`/${filename}`} className='px-4 py-2 bg-black text-white rounded-md'>
-          View in AR
+        <a
+          rel='ar'
+          href={`/${filename}`}
+          className='px-4 py-2 bg-black text-white rounded-md'
+          onClick={(e) => {
+            // Prevent default if file doesn't exist
+            fetch(`/${filename}`, { method: 'HEAD' })
+              .then((response) => {
+                if (!response.ok) {
+                  e.preventDefault()
+                  setError(`File not found: ${filename}`)
+                  alert(`Error: USDZ file not found. Check if ${filename} exists in public folder.`)
+                }
+              })
+              .catch(() => {
+                e.preventDefault()
+                setError('Network error')
+                alert('Network error while loading AR model')
+              })
+          }}
+        >
+          View in AR ({currentColor})
         </a>
         {error && <div className='text-red-500 text-sm'>{error}</div>}
       </div>
