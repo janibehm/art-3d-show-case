@@ -66,7 +66,7 @@ export function ARView({ currentColor }) {
     return (
       <a
         rel='ar'
-        href='/balloon-dog-${currentColor}.usdz'
+        href={`/balloon-dog-${currentColor}.usdz`}
         className='absolute top-4 right-4 px-4 py-2 bg-black text-white rounded-md'
       >
         View in AR
