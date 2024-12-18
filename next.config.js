@@ -17,7 +17,9 @@ const nextConfig = {
   //   styledComponents: true,
   // },
   reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
-  images: {},
+  images: {
+    remotePatterns: [],
+  },
   webpack(config, { isServer }) {
     if (!isServer) {
       // We're in the browser build, so we can safely exclude the sharp module
@@ -49,7 +51,39 @@ const nextConfig = {
       use: ['raw-loader', 'glslify-loader'],
     })
 
+    // Add USDZ support
+    config.module.rules.push({
+      test: /\.usdz$/,
+      use: [
+        {
+          loader: 'file-loader',
+          options: {
+            publicPath: '/_next/static/models/',
+            outputPath: 'static/models/',
+            name: '[name].[ext]',
+          },
+        },
+      ],
+    })
+
     return config
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*.usdz',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'model/vnd.usdz+zip',
+          },
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*',
+          },
+        ],
+      },
+    ]
   },
 }
 

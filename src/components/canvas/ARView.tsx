@@ -65,28 +65,16 @@ export function ARView({ currentColor }) {
 
   if (isIOSDevice) {
     const filename = `balloon-dog-${currentColor.toLowerCase()}.usdz`
+    const fullPath = `/${filename}`
 
     return (
       <div className='fixed top-4 right-4 flex flex-col gap-2'>
         <a
           rel='ar'
-          href={`/${filename}`}
+          href={fullPath}
           className='px-4 py-2 bg-black text-white rounded-md'
           onClick={(e) => {
-            // Prevent default if file doesn't exist
-            fetch(`/${filename}`, { method: 'HEAD' })
-              .then((response) => {
-                if (!response.ok) {
-                  e.preventDefault()
-                  setError(`File not found: ${filename}`)
-                  alert(`Error: USDZ file not found. Check if ${filename} exists in public folder.`)
-                }
-              })
-              .catch(() => {
-                e.preventDefault()
-                setError('Network error')
-                alert('Network error while loading AR model')
-              })
+            window.location.href = fullPath
           }}
         >
           View in AR ({currentColor})
