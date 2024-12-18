@@ -55,6 +55,10 @@ export default function Head() {
         Be sure validate your Twitter card markup on the documentation site. */}
       <meta name='twitter:card' content='summary' />
       <meta name='twitter:site' content={twitter} />
+
+      <meta name='apple-mobile-web-app-capable' content='yes' />
+      <link rel='apple-touch-icon' href='/icons/apple-touch-icon.png' />
+      <link rel='apple-mobile-web-app-status-bar-style' content='black-translucent' />
     </>
   )
 }
