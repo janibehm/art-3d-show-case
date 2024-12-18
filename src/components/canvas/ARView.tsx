@@ -65,21 +65,12 @@ export function ARView({ currentColor }) {
 
   if (isIOSDevice) {
     const filename = `balloon-dog-${currentColor.toLowerCase()}.usdz`
-    const fullPath = `/${filename}`
 
     return (
       <div className='fixed top-4 right-4 flex flex-col gap-2'>
-        <a
-          rel='ar'
-          href={fullPath}
-          className='px-4 py-2 bg-black text-white rounded-md'
-          onClick={(e) => {
-            window.location.href = fullPath
-          }}
-        >
+        <a rel='ar' href={`/${filename}`} className='px-4 py-2 bg-black text-white rounded-md'>
           View in AR ({currentColor})
         </a>
-        {error && <div className='text-red-500 text-sm'>{error}</div>}
       </div>
     )
   }
