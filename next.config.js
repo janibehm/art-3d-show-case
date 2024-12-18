@@ -51,15 +51,15 @@ const nextConfig = {
       use: ['raw-loader', 'glslify-loader'],
     })
 
-    // Add USDZ support
+    // Update USDZ support config
     config.module.rules.push({
       test: /\.usdz$/,
       use: [
         {
           loader: 'file-loader',
           options: {
-            publicPath: '/_next/static/models/',
-            outputPath: 'static/models/',
+            publicPath: '/',
+            outputPath: 'public/',
             name: '[name].[ext]',
           },
         },
@@ -71,7 +71,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/:path*.usdz',
+        source: '/:filename*.usdz',
         headers: [
           {
             key: 'Content-Type',
