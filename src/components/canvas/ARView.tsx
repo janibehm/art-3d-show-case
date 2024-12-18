@@ -49,6 +49,7 @@ function Model({ currentColor }) {
 export function ARView({ currentColor }) {
   const [isIOSDevice, setIsIOSDevice] = useState(false)
   const [isARSupported, setIsARSupported] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     setIsIOSDevice(isIOS())
@@ -63,14 +64,38 @@ export function ARView({ currentColor }) {
   }
 
   if (isIOSDevice) {
+    const filename = `balloon-dog-${currentColor.toLowerCase()}.usdz`
+
+    console.log({
+      isIOSDevice,
+      currentColor,
+      filename,
+      fullPath: window.location.origin + '/' + filename,
+    })
+
+    // Add error boundary
+    try {
+      fetch(`/${filename}`)
+        .then((response) => {
+          console.log('Response:', {
+            status: response.status,
+            ok: response.ok,
+            headers: Object.fromEntries(response.headers),
+            url: response.url,
+          })
+        })
+        .catch((error) => console.log('Fetch error:', error.message))
+    } catch (error) {
+      console.log('General error:', error.message)
+    }
+
     return (
-      <a
-        rel='ar'
-        href={`/balloon-dog-${currentColor}.usdz`}
-        className='absolute top-4 right-4 px-4 py-2 bg-black text-white rounded-md'
-      >
-        View in AR
-      </a>
+      <div className='fixed top-4 right-4 flex flex-col gap-2'>
+        <a rel='ar' href={`/${filename}`} className='px-4 py-2 bg-black text-white rounded-md'>
+          View in AR
+        </a>
+        {error && <div className='text-red-500 text-sm'>{error}</div>}
+      </div>
     )
   }
 
