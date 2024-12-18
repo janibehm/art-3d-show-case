@@ -9,7 +9,7 @@ import { Mesh } from 'three'
 // Check if device is iOS
 const isIOS = () => {
   return (
-    /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.userAgent))
   )
 }
 
@@ -64,7 +64,11 @@ export function ARView({ currentColor }) {
 
   if (isIOSDevice) {
     return (
-      <a rel='ar' href='/balloon-dog.usdz' className='absolute top-4 right-4 px-4 py-2 bg-black text-white rounded-md'>
+      <a
+        rel='ar'
+        href='/balloon-dog-${currentColor}.usdz'
+        className='absolute top-4 right-4 px-4 py-2 bg-black text-white rounded-md'
+      >
         View in AR
       </a>
     )
