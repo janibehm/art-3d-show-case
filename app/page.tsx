@@ -21,8 +21,13 @@ const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.
   ),
 })
 
+const ARView = dynamic(() => import('@/components/canvas/ARView').then((mod) => mod.ARView), {
+  ssr: false,
+})
+
 export default function Page() {
   const [currentColor, setCurrentColor] = useState('green')
+  const [isARMode, setIsARMode] = useState(false)
 
   // Define color values
   const colorValues = {
@@ -81,34 +86,43 @@ export default function Page() {
         }
       `}</style>
       <div className='container mx-auto px-4'>
-        <div className='flex flex-col items-center min-h-screen'>
-          <div className='w-full max-w-4xl mb-8' style={{ height: '65vh' }}>
-            <View className='h-full'>
-              <Suspense fallback={null}>
-                <ambientLight intensity={0.5} />
-                <SpotLight position={[10, 10, 10]} angle={0.3} penumbra={1} intensity={2} castShadow />
-                <SpotLight position={[-10, 10, -10]} angle={0.3} penumbra={1} intensity={2} castShadow />
-                <Environment preset='studio' />
+        <div className='flex flex-col items-center min-h-screen pt-8'>
+          <div className='w-full max-w-4xl text-center mb-8'>
+            <h1 className='text-4xl md:text-5xl font-bold text-black mb-2'>Elysia Design</h1>
+            <p className='text-gray-600 text-lg'>Contemporary Art Pieces</p>
+          </div>
 
-                <BalloonDog
-                  color={currentColor}
-                  scale={2.2}
-                  position={[0, -2, 0]}
-                  rotation={[0, 0, 0]}
-                  rotationSpeed={0.2}
-                  onColorChange={handleColorChange}
+          <div className='w-full max-w-4xl mb-8' style={{ height: '65vh' }}>
+            {isARMode ? (
+              <ARView currentColor={currentColor} onExit={() => setIsARMode(false)} />
+            ) : (
+              <View className='h-full'>
+                <Suspense fallback={null}>
+                  <ambientLight intensity={0.5} />
+                  <SpotLight position={[10, 10, 10]} angle={0.3} penumbra={1} intensity={2} castShadow />
+                  <SpotLight position={[-10, 10, -10]} angle={0.3} penumbra={1} intensity={2} castShadow />
+                  <Environment preset='studio' />
+
+                  <BalloonDog
+                    color={currentColor}
+                    scale={2.2}
+                    position={[0, -2, 0]}
+                    rotation={[0, 0, 0]}
+                    rotationSpeed={0.2}
+                    onColorChange={handleColorChange}
+                  />
+                </Suspense>
+                <OrbitControls
+                  enableZoom={false}
+                  enablePan={true}
+                  enableRotate={true}
+                  minPolarAngle={Math.PI / 4}
+                  maxPolarAngle={Math.PI / 1.5}
+                  minDistance={2}
+                  maxDistance={12}
                 />
-              </Suspense>
-              <OrbitControls
-                enableZoom={false}
-                enablePan={true}
-                enableRotate={true}
-                minPolarAngle={Math.PI / 4}
-                maxPolarAngle={Math.PI / 1.5}
-                minDistance={2}
-                maxDistance={12}
-              />
-            </View>
+              </View>
+            )}
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl'>
@@ -123,6 +137,15 @@ export default function Page() {
             </div>
 
             <div className='flex flex-col justify-start gap-3'>
+              <div className='flex items-center gap-2'>
+                <button
+                  onClick={() => setIsARMode(!isARMode)}
+                  className='px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors'
+                >
+                  {isARMode ? 'Exit AR' : 'View in AR'}
+                </button>
+              </div>
+
               <div className='flex items-center gap-3'>
                 <h2 className='text-xl font-bold'>Variant</h2>
                 <div className='flex items-center gap-2'>
