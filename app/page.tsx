@@ -86,7 +86,51 @@ export default function Page() {
         }
       `}</style>
       <div className='container mx-auto px-4'>
-        <div className='flex flex-col items-center min-h-screen'>
+        <div className='flex flex-col items-center min-h-screen pt-8'>
+          <div className='w-full max-w-4xl text-center mb-8'>
+            <h1 className='text-4xl md:text-5xl font-bold text-black mb-2'>Elysia Design</h1>
+            <p className='text-gray-600 text-lg'>Contemporary Art Pieces</p>
+          </div>
+
+          <div className='w-full max-w-4xl mb-6 flex justify-between items-center'>
+            <div className='flex items-center gap-3'>
+              <h2 className='text-xl font-bold'>Variant</h2>
+              <div className='flex items-center gap-2'>
+                <button
+                  onClick={handlePreviousColor}
+                  className='p-1.5 bg-black text-white rounded-full hover:bg-gray-800 transition-colors text-sm'
+                >
+                  ←
+                </button>
+                <select
+                  value={currentColor}
+                  onChange={(e) => setCurrentColor(e.target.value)}
+                  className='px-3 py-1.5 bg-black text-white rounded-md hover:bg-gray-800 
+                            transition-colors cursor-pointer focus:outline-none focus:ring-2 
+                            focus:ring-white focus:ring-offset-2 focus:ring-offset-[#ffe0e0]'
+                >
+                  <option value='green'>Emerald</option>
+                  <option value='pink'>Rose</option>
+                  <option value='red'>Ruby</option>
+                  <option value='blue'>Sapphire</option>
+                </select>
+                <button
+                  onClick={handleNextColor}
+                  className='p-1.5 bg-black text-white rounded-full hover:bg-gray-800 transition-colors text-sm'
+                >
+                  →
+                </button>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsARMode(!isARMode)}
+              className='px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors'
+            >
+              {isARMode ? 'Exit AR' : 'View in AR'}
+            </button>
+          </div>
+
           <div className='w-full max-w-4xl mb-8' style={{ height: '65vh' }}>
             {isARMode ? (
               <ARView currentColor={currentColor} onExit={() => setIsARMode(false)} />
@@ -120,7 +164,7 @@ export default function Page() {
             )}
           </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl'>
             <div className='space-y-3'>
               <h2 className='text-xl font-bold'>{colorDescriptions[currentColor].title}</h2>
               <p className='text-gray-600 text-sm'>{colorDescriptions[currentColor].description}</p>
@@ -129,48 +173,6 @@ export default function Page() {
             <div className='space-y-3'>
               <h2 className='text-xl font-bold'>Details</h2>
               <p className='text-gray-600 text-sm'>{colorDescriptions[currentColor].details}</p>
-            </div>
-
-            <div className='flex flex-col justify-start gap-3'>
-              <div className='flex items-center gap-3'>
-                <h2 className='text-xl font-bold'>Variant</h2>
-                <div className='flex items-center gap-2'>
-                  <button
-                    onClick={handlePreviousColor}
-                    className='p-1.5 bg-black text-white rounded-full hover:bg-gray-800 transition-colors text-sm'
-                  >
-                    ←
-                  </button>
-                  <select
-                    value={currentColor}
-                    onChange={(e) => setCurrentColor(e.target.value)}
-                    className='px-3 py-1.5 bg-black text-white rounded-md hover:bg-gray-800 
-                              transition-colors cursor-pointer focus:outline-none focus:ring-2 
-                              focus:ring-white focus:ring-offset-2 focus:ring-offset-[#ffe0e0]'
-                  >
-                    <option value='green'>Emerald</option>
-                    <option value='pink'>Rose</option>
-                    <option value='red'>Ruby</option>
-                    <option value='blue'>Sapphire</option>
-                  </select>
-                  <button
-                    onClick={handleNextColor}
-                    className='p-1.5 bg-black text-white rounded-full hover:bg-gray-800 transition-colors text-sm'
-                  >
-                    →
-                  </button>
-                </div>
-              </div>
-
-              <div className='flex items-center gap-2'>
-                <button
-                  onClick={() => setIsARMode(!isARMode)}
-                  className='px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition-colors'
-                >
-                  {isARMode ? 'Exit AR' : 'View in AR'}
-                </button>
-              </div>
-
               <a
                 href='https://www.etsy.com/fi-en/listing/1726413506/blue-resin-balloon-dog-desk-sculpture'
                 target='_blank'
