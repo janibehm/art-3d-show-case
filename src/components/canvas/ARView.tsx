@@ -19,14 +19,15 @@ const store = createXRStore()
 function Model({ currentColor, onPlaced }) {
   const [placed, setPlaced] = useState(false)
   const [rotation, setRotation] = useState(0)
+  const [scale, setScale] = useState(0.5)
   const meshRef = useRef<Mesh>(null)
   const touchStart = useRef<Vector3 | null>(null)
 
   const handlePlacement = (e) => {
     if (!placed && meshRef.current) {
-      // Place on detected surface
       meshRef.current.position.copy(e.point)
       setPlaced(true)
+      onPlaced()
     }
   }
 
@@ -50,17 +51,36 @@ function Model({ currentColor, onPlaced }) {
     touchStart.current = null
   }
 
+  const handleScale = (e) => {
+    if (placed && e.touches?.length === 2) {
+      const touch1 = e.touches[0]
+      const touch2 = e.touches[1]
+      const dist = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY)
+
+      if (!touchStart.current) {
+        touchStart.current = new Vector3(dist, 0, 0)
+      } else {
+        const delta = dist / touchStart.current.x
+        setScale(Math.max(0.2, Math.min(2, delta * 0.5)))
+      }
+    }
+  }
+
   return (
     <mesh
       ref={meshRef}
       rotation={[0, rotation, 0]}
+      scale={scale}
       onPointerDown={handlePlacement}
       onPointerMove={(e) => {
-        if (e.pointerType === 'touch') handleRotation(e)
+        if (e.pointerType === 'touch') {
+          handleRotation(e)
+          handleScale(e)
+        }
       }}
       onPointerUp={handleTouchEnd}
     >
-      <BalloonDog color={currentColor} scale={0.5} onColorChange={() => {}} />
+      <BalloonDog color={currentColor} onColorChange={() => {}} />
     </mesh>
   )
 }
@@ -80,13 +100,8 @@ export function ARView({ currentColor }) {
   // iOS Quick Look AR
   if (isIOSDevice) {
     const filename = `balloon-dog-${currentColor.toLowerCase()}.usdz`
-    return (
-      <div className='fixed top-4 right-4 flex flex-col gap-2'>
-        <a rel='ar' href={`/${filename}`} className='px-4 py-2 bg-black text-white rounded-md'>
-          View in AR ({currentColor})
-        </a>
-      </div>
-    )
+    window.location.href = `/${filename}`
+    return null // Don't render anything, just redirect
   }
 
   // WebXR AR for other devices
