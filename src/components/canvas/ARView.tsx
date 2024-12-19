@@ -85,7 +85,7 @@ function Model({ currentColor, onPlaced }) {
   )
 }
 
-export function ARView({ currentColor }) {
+export function ARView({ currentColor, onExit }) {
   const [isIOSDevice, setIsIOSDevice] = useState(false)
   const [isARSupported, setIsARSupported] = useState(false)
   const [placed, setPlaced] = useState(false)
@@ -96,6 +96,18 @@ export function ARView({ currentColor }) {
       navigator.xr?.isSessionSupported('immersive-ar').then((supported) => setIsARSupported(supported))
     }
   }, [])
+
+  useEffect(() => {
+    // Listen for visibility change
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        onExit?.() // Call onExit when user returns from AR
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+  }, [onExit])
 
   // iOS Quick Look AR
   if (isIOSDevice) {

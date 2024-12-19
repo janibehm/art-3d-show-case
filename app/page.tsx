@@ -89,7 +89,7 @@ export default function Page() {
         <div className='flex flex-col items-center min-h-screen'>
           <div className='w-full max-w-4xl mb-8' style={{ height: '65vh' }}>
             {isARMode ? (
-              <ARView currentColor={currentColor} />
+              <ARView currentColor={currentColor} onExit={() => setIsARMode(false)} />
             ) : (
               <View className='h-full'>
                 <Suspense fallback={null}>
